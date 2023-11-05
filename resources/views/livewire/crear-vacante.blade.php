@@ -19,7 +19,7 @@
                     <option value="{{ $salario->id}}"> {{ $salario->salario}}</option>
             @endforeach 
         </select>
-        @error('salario')
+        @error('salario')   
             @livewire('mostrar-alerta', ['message' => $message])
         @enderror
     </div>

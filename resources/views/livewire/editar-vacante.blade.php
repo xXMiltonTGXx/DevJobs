@@ -1,4 +1,4 @@
-<form class="md:w-1/2 space-y-5" wire:submit.prevent='crearVacante'> 
+<form class="md:w-1/2 space-y-5" wire:submit.prevent='editarVacante'> 
     <div>
         <x-input-label for="titulo" :value="__('Titulo Vacante')" />
         <x-text-input id="titulo" class="block mt-1 w-full" type="text" wire:model="titulo" :value="old('titulo')" placeholder="Titulo Vacante" /> 
@@ -71,13 +71,12 @@
       
         <div class="my-5 w-80">
             <x-input-label :value="__('Imagen Actual')" />
-
-            {{ $imagen }}
-
+ 
+ 
+ 
             <img src="{{ asset('storage/vacantes/' . $imagen) }}" alt="{{ 'Imagen Vacante: ' . $titulo }}">
-
-
-
+            {{-- <img src="{{ url('storage/vacantes').'/'. $imagen }}" alt="Imagen Vacante:  {{$titulo}}"> --}}
+ 
          </div>
 
         {{-- <div class="my-5 w-80">
