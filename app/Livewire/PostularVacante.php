@@ -25,22 +25,29 @@ class PostularVacante extends Component
     public function postularme(){ 
         $datos = $this->validate();
 
-        //Almacenar CV en el disco duro
-         $cv = $this->cv->store('public/cv');
-         $datos['cv']= str_replace('public/cv/','',$cv);
 
-        //Crear el candidato a la vacante
-        $this->vacante->candidatos()->create([
-            'user_id' => auth()->user()->id,
-            'cv' =>  $datos['cv']
-        ]);
+        if($this->vacante->candidatos()->where('user_id', auth()->user()->id)->count() > 0){
+            // Crear el mensaje de error
+            session()->flash('error', 'Ya postulaste a esta vacante anteriormente'); 
+        }else{
  
-        //Crear notificacion y enviar el email
-        $this->vacante->reclutador->notify(new NuevoCandidato($this->vacante->id, $this->vacante->titulo, auth()->user()->id));
+            //Almacenar CV en el disco duro
+            $cv = $this->cv->store('public/cv');
+            $datos['cv']= str_replace('public/cv/','',$cv);
 
-        //Mostrar el usuario un mensaje de ok
-        session()->flash('mensaje','se envio correctamente tu informacion, mucha suerte');
-        return redirect()->back();
+            //Crear el candidato a la vacante
+            $this->vacante->candidatos()->create([
+                'user_id' => auth()->user()->id,
+                'cv' =>  $datos['cv']
+            ]);
+    
+            //Crear notificacion y enviar el email
+            $this->vacante->reclutador->notify(new NuevoCandidato($this->vacante->id, $this->vacante->titulo, auth()->user()->id));
+
+            //Mostrar el usuario un mensaje de ok
+            session()->flash('mensaje','se envio correctamente tu informacion, mucha suerte');
+            return redirect()->back();
+     }
     }
 
     public function render()

@@ -8,8 +8,8 @@
                     <p class="text-sm text-gray-500">Último día: {{ $vacante->ultimo_dia->format('d/m/Y') }}</p>
                 </div>
                 <div class="flex flex-col items-stretch gap-3 mt-5 md:mt-0 md:flex-row">
-                    <a href="#" class="bg-slate-800 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
-                            Candidatos
+                    <a href="{{ route('candidatos.index', $vacante) }}" class="bg-slate-800 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
+                            {{ $vacante->candidatos->count() }} Candidatos
                     </a>
                     <a href="{{ route('vacantes.edit', $vacante->id) }}" class="bg-blue-800 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
                             Editar
