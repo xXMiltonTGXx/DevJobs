@@ -3,7 +3,7 @@
         @forelse ( $vacantes as $vacante )
             <div class="p-6 text-gray-900 dark:text-gray-100 md:flex md:justify-between md:items-center">
                 <div class="sapace-y-3">
-                    <a href="#" class="text-xl font-bold">{{ $vacante->titulo }}</a>
+                    <a href="{{ route('vacantes.show', $vacante->id)}}" class="text-xl font-bold">{{ $vacante->titulo }}</a>
                     <p class="text-sm text-gray-600 font-bold"> {{ $vacante->empresa}}</p>
                     <p class="text-sm text-gray-500">Último día: {{ $vacante->ultimo_dia->format('d/m/Y') }}</p>
                 </div>
@@ -13,10 +13,14 @@
                     </a>
                     <a href="{{ route('vacantes.edit', $vacante->id) }}" class="bg-blue-800 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
                             Editar
-                    </a>
-                    <a href="#" class="bg-red-600 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
-                            Eliminar
-                    </a>
+                    </a> 
+                     
+                    <button wire:click="$dispatch('mostrarAlerta', {{ $vacante->id}})"
+                        class="bg-red-600 py-2 text-center px-4 rounded-lg text-white text-xs font-bold uppercase">
+                        Eliminar
+                    </button>
+                    
+                    
                 </div> 
             </div>
         @empty
@@ -33,22 +37,27 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    Swal.fire({
-        title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+        Livewire.on('mostrarAlerta', vacanteID=>{
+            Swal.fire({
+                title: '¿Eliminar Vacante?',
+                text: "Una vacante eliminada no se puede recuperar",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
+                confirmButtonText: 'Si, !Eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
                 if (result.isConfirmed) {
-                Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            )
-        }           
-    })          
+                    //Eliminar la vacante desde el servidor
+                    Livewire.dispatch('eliminarVacante', {vacante: vacanteID})
+                     Swal.fire(
+                        'Eliminado!',
+                        'Tu vacante ha sido eliminado.',
+                        'success'
+                    )
+                }           
+            })   
+        })   
     </script>
 @endpush
