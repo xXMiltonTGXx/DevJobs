@@ -20,7 +20,6 @@
                         Eliminar
                     </button>
                     
-                    
                 </div> 
             </div>
         @empty

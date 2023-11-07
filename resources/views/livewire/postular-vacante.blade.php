@@ -22,9 +22,14 @@
                         @livewire('mostrar-alerta', ['message' => $message])
                     @enderror
             </div> 
-            <x-primary-button class="w-full justify-center">
+            <x-primary-button class="w-full justify-center gap-3" wire:loading.attr="disabled">
                 {{ __('Postularme') }}
-            </x-primary-button>
+                <div 
+                    wire:loading wire:target="postularme"
+                    class="inline-block h-4 w-4 mr-1 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]" 
+                    role="status"
+                ></div>
+            </x-primary-button> 
         </form>
     @endif 
 </div>
